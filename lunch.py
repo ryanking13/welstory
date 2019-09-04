@@ -8,7 +8,7 @@ except:
     if not cookies['JSESSIONID']:
         print('[-] Add session id on `session_template.py`')
         exit(1)
-        
+
 
 url = 'http://mw.welstory.com/nmenu_today.do'
 
@@ -22,6 +22,13 @@ class Menu:
 
     def __repr__(self):
         return f'{self.name}({self.kcal} kcal)'
+    
+    def dump(self):
+        return {
+            'name': self.name,
+            'image': self.image,
+            'kcal': self.kcal,
+        }
 
 class Course:
     
@@ -42,6 +49,17 @@ class Course:
         return (
             f'{repr(self.main)}/' + '/'.join([repr(s) for s in self.side])
         )
+    
+    def dump(self):
+        d = {
+            'kcal': self.kcal,
+            'course': self.main.course,
+            'main': self.main.dump(),
+            'side': [s.dump() for s in self.side],
+        }
+
+        return d
+
 
 def get_menu(restaurant_code='REST000133', date='20190904', meal_type='2'):
     data = {
@@ -64,10 +82,10 @@ def get_menu(restaurant_code='REST000133', date='20190904', meal_type='2'):
     for menu in menus:
         course = menu['course_txt']
         courses[course].add_menu(menu)
-
-    for c in courses.values():
-        print(c)
+    
+    courses_dump = [c.dump() for c in courses.values()]
+    return courses_dump
 
 
 if __name__ == '__main__':
-    get_menu()
+    print(get_menu())
