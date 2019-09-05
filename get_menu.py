@@ -68,6 +68,7 @@ def get_menu(code=RestaurantCode.MULTICAMPUS, date=None, meal_type=MealType.LUNC
 
     courses = defaultdict(lambda: Course())
     for menu in menus:
+        # course_txt identifies where menu belongs to
         course = menu["course_txt"]
         courses[course].add_menu(menu)
 
@@ -76,4 +77,4 @@ def get_menu(code=RestaurantCode.MULTICAMPUS, date=None, meal_type=MealType.LUNC
 
 
 if __name__ == "__main__":
-    print(get_menu(date=today()))
+    print(get_menu())
