@@ -1,15 +1,10 @@
 from collections import defaultdict
+import datetime
 import requests
 import json
-try:
-    from session import cookies
-except:
-    from session_template import cookies
-    if not cookies['JSESSIONID']:
-        print('[-] Add session id on `session_template.py`')
-        exit(1)
 
 
+login_url = 'http://mw.welstory.com/nsimple_member_insert.do'
 url = 'http://mw.welstory.com/nmenu_today.do'
 
 class Menu:
@@ -61,6 +56,28 @@ class Course:
         return d
 
 
+def today():
+    # YYYYMMDD format
+    return str(datetime.datetime.today().strftime('%Y%m%d'))
+
+
+def login():
+    sess = requests.session()
+    sess.post(login_url, data={
+        'MODULE': 'LOGIN_SIMPLE',
+        'mem_name': '김이박',
+        'phone': '01012341234',
+        'birth': '000000',
+        'sex': '3',
+        'agree_date': today(),
+        'agree_event': '0',
+        'device_type': 'I',
+        'app_type': '1001',
+    })
+
+    return sess    
+
+
 def get_menu(restaurant_code='REST000133', date='20190904', meal_type='2'):
     data = {
         'MODULE': 'TODAY_MENU_LIST',
@@ -71,7 +88,8 @@ def get_menu(restaurant_code='REST000133', date='20190904', meal_type='2'):
         'meal_type': meal_type,
     }
 
-    resp = requests.post(url, cookies=cookies, data=data, allow_redirects=False)
+    sess = login()
+    resp = sess.post(url, data=data, allow_redirects=False)
 
     if (resp.status_code != 200):
         raise(ConnectionError("Authentication failed, maybe cookie expired"))
