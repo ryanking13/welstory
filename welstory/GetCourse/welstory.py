@@ -2,7 +2,7 @@ from collections import defaultdict
 import datetime
 import requests
 import json
-from course import Course
+from .course import Course
 
 
 class MealType:

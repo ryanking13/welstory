@@ -1,41 +1,38 @@
 import logging
-from welstory import get_menu, RestaurantCode, MealType
+import json
+from .welstory import get_menu, today, RestaurantCode, MealType
 import azure.functions as func
 
 DEFAULT_CODE = RestaurantCode.MULTICAMPUS
 DEFAULT_MEAL_TYPE = MealType.LUNCH
 
 
+def get_param(req, name, default):
+    param = req.params.get(name)
+    if not param:
+        try:
+            req_body = req.get_json()
+        except ValueError:
+            pass
+        else:
+            param = req_body.get(name)
+
+    if not param:
+        param = default
+
+    return param
+
+
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info("[GetCourse] processed a request.")
+    logging.info("[GetCourse] processing a request.")
 
-    code = req.params.get("code")
-    if not code:
-        try:
-            req_body = req.get_json()
-        except ValueError:
-            pass
-        else:
-            code = req_body.get("code")
+    code = get_param(req, "code", DEFAULT_CODE)
+    meal_type = get_param(req, "meal_type", DEFAULT_MEAL_TYPE)
+    date = get_param(req, "date", today())
 
-    meal_type = req.params.get("meal_type")
-    if not meal_type:
-        try:
-            req_body = req.get_json()
-        except ValueError:
-            pass
-        else:
-            meal_type = req_body.get("meal_type")
-
-    if not code:
-        code = DEFAULT_CODE
-    if not meal_type:
-        meal_type = DEFAULT_MEAL_TYPE
-
-    # if CODE:
-    #     return func.HttpResponse(f"Hello {name}!")
-    # else:
-    #     return func.HttpResponse(
-    #         "Please pass a name on the query string or in the request body",
-    #         status_code=400,
-    #     )
+    logging.info(f"[GetCourse] code={code}, meal_type={meal_type}, date={date}")
+    return func.HttpResponse(
+        json.dumps(get_menu(code=code, meal_type=meal_type, date=date)),
+        status_code=200,
+        headers={"Access-Control-Allow-Origin": "*"},
+    )
