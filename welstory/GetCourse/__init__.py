@@ -32,7 +32,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     logging.info(f"[GetCourse] code={code}, meal_type={meal_type}, date={date}")
     return func.HttpResponse(
-        json.dumps(get_menu(code=code, meal_type=meal_type, date=date)),
+        json.dumps(
+            get_menu(code=code, meal_type=meal_type, date=date), ensure_ascii=False
+        ),
         status_code=200,
         headers={"Access-Control-Allow-Origin": "*"},
     )
