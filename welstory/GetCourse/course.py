@@ -1,6 +1,7 @@
 class Menu:
     def __init__(self, menu):
-        self.course = menu["course_txt"]
+        self.type = menu["menu_meal_type"]  # breakfast(1)/lunch(2)/dinner(3)
+        self.course = menu["course_txt"]  # A/B/C
         self.name = menu["menu_name"]
         self.image = (
             menu["image_url"] + menu["photo_cd"]
@@ -35,6 +36,7 @@ class Course:
 
     def dump(self):
         d = {
+            "type": self.main.type,
             "kcal": self.kcal,
             "course": self.main.course,
             "main": self.main.dump(),

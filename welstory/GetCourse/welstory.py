@@ -13,6 +13,7 @@ class MealType:
 class RestaurantCode:
     # TODO: add more codes
     MULTICAMPUS = "REST000133"
+    SNURESEARCH = "REST000176"
 
 
 LOGIN_URL = "http://mw.welstory.com/nsimple_member_insert.do"
@@ -44,7 +45,7 @@ def login():
     return sess
 
 
-def get_menu(code=RestaurantCode.MULTICAMPUS, date=None, meal_type=MealType.LUNCH):
+def get_menu(code=RestaurantCode.SNURESEARCH, date=None, meal_type=MealType.LUNCH):
     if date is None:
         date = today()
 
@@ -68,8 +69,8 @@ def get_menu(code=RestaurantCode.MULTICAMPUS, date=None, meal_type=MealType.LUNC
 
     courses = defaultdict(lambda: Course())
     for menu in menus:
-        # course_txt identifies where menu belongs to
-        course = menu["course_txt"]
+        # menu_course_type identifies where menu belongs to
+        course = menu["menu_course_type"]
         courses[course].add_menu(menu)
 
     courses_dump = [c.dump() for c in courses.values()]
