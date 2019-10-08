@@ -10,5 +10,6 @@ func host start
 ## Deploy
 
 ```
+func azure functionapp fetch-app-settings welstory
 func azure functionapp publish welstory
 ```
