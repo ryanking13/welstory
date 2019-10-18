@@ -7,6 +7,7 @@
             <v-layout column>
               <v-list-item>
                 <v-list-item-content>
+                  <!-- <v-list-item-subtitle style="white-space:initial">{{ name }}</v-list-item-subtitle> -->
                   <v-list-item-title class="headline" style="white-space:initial">{{ main.name }}</v-list-item-title>
                   <v-list-item-subtitle style="white-space:initial">
                     <span>{{ sideStr }}</span>
