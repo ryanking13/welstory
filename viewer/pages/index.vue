@@ -3,8 +3,10 @@
     <github-ribbon />
     <v-container text-center>
       <div class="display-1 pa-10">
-        웰스토리
-        <wbr />식단 뷰어
+        <span class="maintitle">
+          웰스토리
+          <wbr />식단 뷰어
+        </span>
       </div>
       <v-layout justify-center align-center>
         <v-flex xs8 sm6 fill-height>
@@ -24,7 +26,7 @@
           </v-menu>
           <v-select v-model="mealType" :items="mealTypeNames" label="종류" />
           <v-layout justify-center pa-10>
-            <v-btn large color="green white--text" @click="onSearch" :loading="loading">Search</v-btn>
+            <v-btn large color="green white--text" @click="onSearch" :loading="loading">Go!</v-btn>
           </v-layout>
         </v-flex>
       </v-layout>
@@ -101,3 +103,8 @@ export default {
 };
 </script>
 
+<style>
+.maintitle {
+  font-family: "Do Hyeon", sans-serif;
+}
+</style>
