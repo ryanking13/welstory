@@ -7,27 +7,20 @@
             <v-layout column>
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title class="headline">{{ title }}</v-list-item-title>
-                  <v-list-item-subtitle>{{ genresStr }}</v-list-item-subtitle>
+                  <v-list-item-title class="headline" style="white-space:initial">{{ main.name }}</v-list-item-title>
+                  <v-list-item-subtitle style="white-space:initial">
+                    <span>{{ sideStr }}</span>
+                  </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
               <v-card-text>
                 <v-layout justify-center>
-                  <v-rating
-                    :value="rating"
-                    color="indigo"
-                    background-color="indigo"
-                    half-increments
-                    dense
-                    readonly
-                  />
-                  <div class="grey--text ml-4">{{ rating.toFixed(1) }}</div>
+                  <div class="grey--text ml-4">{{ kcal }} kcal</div>
                 </v-layout>
               </v-card-text>
               <v-card-text>
                 <v-layout justify-center>
-                  <v-icon color="black">mdi-eye</v-icon>
-                  <div class="grey--text ml-4">{{ viewCnt }}</div>
+                  <v-img :src="main.image" max-width="200px" />
                 </v-layout>
               </v-card-text>
             </v-layout>
@@ -63,8 +56,8 @@ export default {
     }
   },
   computed: {
-    genresStr: function() {
-      return this.genres.join(" / ");
+    sideStr() {
+      return this.side.map(s => s.name).join(" / ");
     }
   }
 };

@@ -1,10 +1,10 @@
 <template>
   <v-app id="app">
     <github-ribbon />
-    <CourseList :courses="courses" />
-    <v-layout justify-center align-center pa-10>
+    <v-layout justify-center align-center>
       <v-btn large color="green white--text" @click="onSearch">Search</v-btn>
     </v-layout>
+    <CourseList :courses="courses" />
   </v-app>
 </template>
 
@@ -29,7 +29,7 @@ export default {
           params
         }
       );
-      this.courses = JSON.parse(courses);
+      this.courses = courses.data;
     }
   }
 };
