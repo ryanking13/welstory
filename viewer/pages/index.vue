@@ -1,6 +1,5 @@
 <template>
   <v-app id="app">
-    <github-ribbon />
     <v-container text-center>
       <div class="display-1 pa-10">
         <span class="maintitle">
@@ -44,7 +43,7 @@ export default {
   data: () => ({
     menu: false,
     courses: [],
-    restaurant: "전자서울대연구소",
+    restaurant: "멀티캠퍼스",
     date: new Date().toJSON().slice(0, 10),
     mealType: "점심",
     loading: false,
