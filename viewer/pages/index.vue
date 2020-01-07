@@ -30,6 +30,9 @@
         </v-flex>
       </v-layout>
       <CourseList :courses="courses" />
+      <div v-if="showErrorModal">
+        <ErrorModal :onClose="onModalClose" />
+      </div>
     </v-container>
   </v-app>
 </template>
@@ -37,6 +40,7 @@
 <script>
 import GithubRibbon from "../components/GithubRebbon";
 import CourseList from "../components/CourseList";
+import ErrorModal from "../components/ErrorModal";
 import axios from "axios";
 
 export default {
@@ -47,6 +51,7 @@ export default {
     date: new Date().toJSON().slice(0, 10),
     mealType: "점심",
     loading: false,
+    showErrorModal: false,
 
     restaurants: {
       멀티캠퍼스: "REST000133",
@@ -60,7 +65,8 @@ export default {
   }),
   components: {
     GithubRibbon,
-    CourseList
+    CourseList,
+    ErrorModal
   },
   computed: {
     restaurantNames() {
@@ -89,14 +95,24 @@ export default {
         mealType: this.mealTypeCode
       };
       this.loading = true;
-      const courses = await axios.get(
-        "https://welstory.azurewebsites.net/api/getcourse/",
-        {
-          params
-        }
-      );
-      this.courses = courses.data.filter(d => d.type === this.mealTypeCode);
-      this.loading = false;
+      try {
+        const courses = await axios.get(
+          "https://welstory.azurewebsites.net/api/getcourse/",
+          {
+            params
+          }
+        );
+
+        this.courses = courses.data.filter(d => d.type === this.mealTypeCode);
+        this.loading = false;
+      } catch {
+        console.log("asdfqqq");
+        this.loading = false;
+        this.showErrorModal = true;
+      }
+    },
+    onModalClose: function() {
+      this.showErrorModal = false;
     }
   }
 };
