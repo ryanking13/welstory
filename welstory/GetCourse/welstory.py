@@ -4,6 +4,8 @@ import requests
 import json
 from .course import Course
 
+USER_AGENT = "Mozilla/5.0 (Linux; Android 5.1.1; SM-N950N Build/NMF26X; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36CH22S2WH0PP2R"
+
 
 class MealType:
     LUNCH = 2
@@ -16,8 +18,8 @@ class RestaurantCode:
     SNURESEARCH = "REST000176"
 
 
-LOGIN_URL = "http://mw.welstory.com/nsimple_member_insert.do"
-MENU_URL = "http://mw.welstory.com/nmenu_today.do"
+LOGIN_URL = "https://mw.welstory.com/nsimple_member_insert.do"
+MENU_URL = "https://mw.welstory.com/nmenu_today.do"
 
 
 def today():
@@ -27,7 +29,8 @@ def today():
 
 def login():
     sess = requests.session()
-    sess.post(
+    sess.headers.update({"user-agent": USER_AGENT})
+    r = sess.post(
         LOGIN_URL,
         data={
             "MODULE": "LOGIN_SIMPLE",
@@ -37,11 +40,13 @@ def login():
             "sex": "3",
             "agree_date": today(),
             "agree_event": "0",
-            "device_type": "I",
+            "device_type": "A",
             "app_type": "1001",
         },
     )
 
+    member_id = r.json()["member_id"]
+    sess.headers.update({"mydishsimple": '{"member_id":"%s"}' % member_id})
     return sess
 
 
